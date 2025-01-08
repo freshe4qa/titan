@@ -5,41 +5,56 @@
 # Titan Testnet — Cassini
 
 Official documentation:
->- [Validator setup instructions](https://titannet.gitbook.io/titan-network-en/cassini-testnet/about-cassini-testnet)
+>- [Validator setup instructions](https://titannet.gitbook.io/titan-network-en/galileo-testnet/node-participation-guide/run-titan-agent-on-linux)
 
 Explorer:
->- [Managment](https://test1.titannet.io/newoverview/activationcodemanagement)
+>- [Managment](https://test4.titannet.io)
 
 ### Minimum Hardware Requirements
- - 8x CPUs; the faster clock speed the better
- - 8GB RAM
- - 5TB of storage (SSD or NVME)
+ - 2x CPUs; the faster clock speed the better
+ - 2GB RAM
+ - 50GB of storage (SSD or NVME)
 
 ### Recommended Hardware Requirements 
- - 16x CPUs; the faster clock speed the better
- - 16GB RAM
- - 10TB of storage (SSD or NVME)
+ - 4x CPUs; the faster clock speed the better
+ - 4GB RAM
+ - 100GB of storage (SSD or NVME)
 
- - Ubuntu 20.04
+ - Ubuntu 22.04
 
 Устанавливаем ноду:
 
+``egrep -c '(vmx|svm)' /proc/cpuinfo``
+
 ``sudo apt update & sudo apt upgrade -y``
 
-``apt install curl iptables build-essential git wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev lz4 -y``
+``apt install curl iptables build-essential git wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev lz4 screen -y``
 
-``apt install docker.io``
+``sudo snap install multipass``
 
-``docker pull nezha123/titan-edge``
+``multipass --version``
 
-``mkdir ~/.titanedge``
+``wget https://pcdn.titannet.io/test4/bin/agent-linux.zip``
 
-``docker run --network=host -d -v ~/.titanedge:/root/.titanedge nezha123/titan-edge``
+``mkdir -p /opt/titanagent``
 
-Переходим на [сайт](https://test1.titannet.io/intiveRegister?code=ycYWJQ), регистрируемся. Далее вкладка Console > Node Management > get identity code. Копируем код и не закрываем вкладку пока не привяжем код.
+``unzip agent-linux.zip -d /opt/titanagent``
 
-Вместо <CODE>, вписываем свой код без <>.
+``screen -S titan``
 
-``docker run --rm -it -v ~/.titanedge:/root/.titanedge nezha123/titan-edge bind --hash=<CODE> https://api-test1.container1.titannet.io/api/v2/device/binding``
+Переходим на [сайт](https://test4.titannet.io), регистрируемся. Далее вкладка Manage Dashboard > Node Management > Your Key. Копируем код.
 
-Обновляем страницу и видим добавленый узел. Теперь за работу ноды будут капать токены проекта.
+``cd /opt/titanagent``
+
+``chmod +x agent``
+
+Вместо <your-key>, вписываем свой код без <>.
+
+``./agent --working-dir=/opt/titanagent --server-url=https://test4-api.titannet.io --key=<your-key>``
+
+На сайте во вкладке Node Management видим добавленый узел. Теперь за работу ноды будут капать токены проекта.
+
+Выйтм с скрина CTRL + A + D
+
+Заново зайти ``screen -r titan``
+
